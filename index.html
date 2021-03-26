@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, width=device-width">
+    <link rel="stylesheet" href="./css/WebManual.css">
+    <title>전원 장애 대응 매뉴얼</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="test">
+        <div id="intro" class="intro-wrap">
+            <!-- 도입부 -->
+            <div class="intro" v-on:click="start">
+                <div class="intro-story" v-html="intro"></div>
+            </div>
+        </div>
+        <div id="err-type">
+            <div class="err-type-wrap">
+                <button class='err-type-btn' v-on:click="err_type(0)" v-html="title_list[0]"></button>
+                <button class='err-type-btn' v-on:click="err_type(1)" v-html="title_list[1]"></button>
+                <button class='err-type-btn' v-on:click="err_type(2)" v-html="title_list[2]"></button>
+                <button class='err-type-btn' v-on:click="err_type(3)" v-html="title_list[3]"></button>
+                <button class='err-type-btn' v-on:click="err_type(4)" v-html="title_list[4]"></button>
+                <button class='err-type-btn' v-on:click="err_type(5)" v-html="title_list[5]"></button>
+                <button class='err-type-btn' v-on:click="err_type(6)" v-html="title_list[6]"></button>
+                <button class='err-type-btn' v-on:click="err_type(7)" v-html="title_list[7]"></button>
+            </div>
+        </div>
+        <div id="caution">
+            <div class="caution-wrap">
+                <div class="title-wrap">
+                    <h2 class="title" style="color:red" >※ 주.의.사.항 ※</h2> <!-- 타이틀 -->
+                </div>
+                <div class="caution-list">
+                    <h3 class="caution">안녕하세요. <br /> 전원시설 장애 조치 전, <br />  아래 사항을 준수해 주세요.</h3>  <!-- result 변수로 변경 -->
+                    <h3 class="caution">▶ 정전 상황 시, <span style="color:red"> 발 밑 주의</span></h3> <!-- result 변수로 변경 -->
+                    <h3 class="caution">▶ 출입문 옆 <span style="color:red">절연장갑</span> 확보 </h3>
+                    <h3 class="caution">▶ 안내된 기기 외 다른 전원 기기 작동 <span style="color:red">금지<br /></span></h3>
+                    <h3 class="caution" v-html="callTo[0]"></h3>
+                    <h3 class="caution" v-html="callTo[1]"></h3>
+                </div>
+                <div class="bottom">
+                    <div class="controller-wrap">
+                        <button class='ok-btn' v-on:click="ok">확인</button>
+                    </div>
+                </div>
+            </div>
+<!--                <h2 class="caution-title">※ 주.의.사.항 ※</h2> &lt;!&ndash; 타이틀 &ndash;&gt;-->
+<!--                <h3 class="caution-list">{{question}}</h3> &lt;!&ndash; 질문 &ndash;&gt;-->
+        </div>
+        <div class="top">
+            <div class="controller-wrap">
+                <img class='back-btn' v-on:click="back" src="./img/back1.png"/>
+                <img class='home-btn' v-on:click="home" src="./img/home1.png"/>
+<!--                    <button class='back-btn' v-on:click="back" >뒤로</button>-->
+<!--                    <button class='home-btn' v-on:click="home" >홈</button>-->
+            </div>
+        </div>
+        <div id="main">
+            <div class="title-wrap">
+                <h2 class="title" v-html="title_list[errIndex]"></h2> <!-- 타이틀 -->
+            </div>
+            <div class="question-wrap">
+                <h3 class="question" v-html="question[qnaIndex].question"></h3> <!-- 질문 -->
+            </div>
+            <div class="answer-wrap">
+                <div class="answer">
+                    <img class="answer" :src="question[qnaIndex].image" alt="My Image" />
+                </div>
+                <div id="call">
+                    <h3 class="status"><a href='tel:042-478-7550' class="callTo" v-html="callTo[1]"></a></h3>
+                    <h3 class="status"><a href='tel:042-478-1800' class="callTo" v-html="callTo[0]"></a></h3>
+                </div>
+            </div>
+            <div class="bottom">
+<!--                <a href = "#top">-->
+                    <div class="controller-wrap">
+                        <button class='left-btn' v-on:click="no">{{nono}}</button>
+                        <button class='right-btn' v-on:click="yes">네</button>
+                    </div>
+<!--                </a>-->
+            </div>
+        </div>
+        <!--<div class="bottom">
+                    <div class="controller-wrap">
+                        <button class='ok-btn' v-on:click="ok">확인</button>
+                        <button class='prev-btn' v-on:click="no">아니요</button>
+                        <button class='next-btn' v-on:click="yes">네</button>
+                    </div>
+                </div>-->
+        <div id="result" >
+            <!-- 결과 -->
+            <div class="result-wrap">
+<!--                <h2 class="title">{{title_list[errIndex]}}</h2> &lt;!&ndash; 타이틀 &ndash;&gt;-->
+                <div class="result">
+                    <h3>{{result[resultIndex].status}}</h3>  <!-- result 변수로 변경 -->
+                    <h3>{{result[resultIndex].todo}}</h3> <!-- result 변수로 변경 -->
+<!--                    <h3 class="status" v-html="callTo"></h3> &lt;!&ndash; result 변수로 변경 &ndash;&gt;-->
+                    <h3 class="status"><a href='tel:042-478-1800' class="callTo" v-html="callTo[0]"></a></h3>
+                    <h3 class="status"><a href='tel:042-478-7550' class="callTo" v-html="callTo[1]"></a></h3>
+                </div>
+            </div>
+        </div>
+        <div id="toast" class="toast-wrap">
+            <div class="toast" v-html="message"></div>
+        </div>
+    </div>
+    <script src="./js/WebManual.js"></script>
+</body>
+</html>
