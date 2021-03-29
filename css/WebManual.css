@@ -61,7 +61,7 @@ a{
 }
 .err-type-btn {
     width: 99.6%;
-    height: 12.33%;
+    height: 10.88%;
     display: table-cell;
     vertical-align: middle;
     text-align: center;
@@ -95,6 +95,7 @@ a{
     position: relative;
     width:100vw;
     padding-top: 5%;
+    padding-bottom: 70px;
 }
 .caution {
     vertical-align:middle;
@@ -243,7 +244,7 @@ a{
     font-size: 1.2em;
     font-weight: bold;
     padding-left: 4%;
-    padding-top: 4%;
+    padding-top: 5%;
 }
 .home-btn {
 /*    width:20%;
@@ -262,7 +263,7 @@ a{
     font-weight: bold;
     float: right;
     padding-right: 4%;
-    padding-top: 4%;
+    padding-top: 5%;
 }
 
 .result-wrap {

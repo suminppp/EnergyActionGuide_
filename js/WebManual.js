@@ -2,19 +2,23 @@ var test = new Vue({
     el: '#test',
     data:{
         intro: '전원분야 점검을 시작합니다<br /><span style="color:gray; font-size:80%;">터치해서 시작</span>',
-        title_list: ['1.한전 정전(자립형)<sup><sup>렉형태</sup></sup>','2.한전 정전(매립형)<sup><sup>벽형태</sup></sup>','3.국사내정전','4.정류기 경보','5.감시장치 통신이상','6.출입문 통신이상','7.정류기 화재 경보','8.냉방기 누수 경보'],
+        title_list: ['1.한전 정전(자립형)<sup><sup>렉형태</sup></sup>','2.한전 정전(매립형)<sup><sup>벽형태</sup></sup>','3.국사내정전','4.정류기 경보','5.감시장치 통신이상','6.출입문 통신이상','7.정류기 화재 경보','8.냉방기 누수 경보','9.냉방기 자동복구장치<sup><sup>탄방</sup></sup>'],
         title: '',
+        caution_list: [],
         question: [],
         result: [],
         errIndex: 0,
         qnaIndex: 0,
+        cauIndex: 0,
         resultIndex: 0,
         message: '',
-        callTo: ['☎ 042-478-1800~1804 (관제2센터)', '☎ 042-478-7550 (전원기술부)'],
+        callTo: ['☎ 042-478-1800~1804 (관제2센터)', '☎ 042-478-7550 (전원기술부)','☎ 042-600-0124 (탄방전력실)'],
+        number: '',
         nono: '잘 모르겠습니다',
         flag: false
     },
-    beforeMount: function() { //insertQna(질문/사진/이전버튼/yes버튼/no버튼)
+    beforeMount: function() {
+        //insertQna(질문/사진/이전버튼/yes버튼/no버튼)
         this.insertQna('1 번 위치를 확인하세요.','./img/err_type_0_0.png', 0,1,0);
 
         this.insertResult('전원관제 및 유관부서 연락해주세요.','현 상황에서 계측값이 변동하는지 주시해주세요.');
@@ -22,6 +26,9 @@ var test = new Vue({
         this.insertResult('정전이 회복되었습니다.','유관부서 공유 후 현장 철수해주세요.');
         this.insertResult('전원관제 및 유관부서 연락해주세요.','전원분야 직원 출동까지 현장 대기 부탁드립니다.');
         this.insertResult('장애가 복구되었습니다.','유관부서 공유 후 현장 철수해주세요.');
+
+        this.insertCaution('안녕하세요. <br /> 전원시설 장애 조치 전, <br />  아래 사항을 준수해 주세요.','▶ 정전 상황 시, <span style="color:red"> 발 밑 주의</span>','▶ 출입문 옆 <span style="color:red">절연장갑</span> 확보','▶ 안내된 기기 외 다른 전원 기기 작동 <span style="color:red">금지</span>','./img/err_type_base.png');
+        this.insertCaution('안녕하세요. <br />탄방 냉방기 자동복구장치 장애조치를 위해 <br />아래 사항을 준비해 주세요.','▶ 냉방기 몸체 open을 위한 <span style="color:red"> 육각렌치</span> 준비','▶ <span style="color:red">일자 드라이버</span> 확보','▶ 안내된 기기 외 다른 전원 기기 작동 <span style="color:red">금지</span>','./img/err_type_8_0.png');
     },
     mounted: function() {
         $('#intro').show();
@@ -73,7 +80,7 @@ var test = new Vue({
             }else if(this.errIndex==1){
                 this.insertQna('국사 출입문 옆에 비치되어있는 기기배치도를 보고 <span style="color:blue">전원제어반(매립형)</span> 위치를 파악해주세요.','./img/err_type_1_0.png', 999,1,100);
                 this.insertQna('<span style="color:red; font-size:120%;">&#9312;</span> 전압(V)계측 위치를 확인하세요.','./img/err_type_1_1_1.png', 0,2,100);
-                this.insertQna('Q1. 전압(V)계측이 0 인가요?','./img/err_type_1_2.png', 1,3,300);
+                this.insertQna('Q1. 전압(V)계측이 0 인가요?','./img/err_type_1_2.png', 1,3,111);
                 this.insertQna('<span style="color:red; font-size:120%;">&#9313;</span> 전류(A)계측 위치를 확인하세요.','./img/err_type_1_1_2.png', 2,4,100);
                 this.insertQna('Q2. 전류(A)계측이 0 인가요?','./img/err_type_1_3.png', 3,5,111);
                 this.insertQna('전압/전류계측값이 변동하는지 주시해주세요. <br /> 계측값에 변동이 생기면 "네"를 눌러주세요.','./img/err_type_1_7.png', 4,6,200);
@@ -113,7 +120,7 @@ var test = new Vue({
                 this.insertQna('<span style="color:red; font-size:120%;">&#9313;</span> 판넬 뒤쪽에 부착되어있는 RMS를 확인하세요.','./img/err_type_4_2.png', 1,3,100);
                 this.insertQna('<span style="color:red; font-size:120%;">&#9314;</span> RUN 옆의 LED가 적색인가요?','./img/err_type_4_3.png', 2,4,444);
                 this.insertQna('<span style="color:red; font-size:120%;">&#9315;</span> RESET 버튼을 눌러주세요.<br /> RUN 옆의 LED가 녹색으로 바뀌었나요?','./img/err_type_4_4.png', 3,555,5);
-                this.insertQna('제어반 전면 I/O보드의 <span style="color:red; font-size:120%;">왼쪽상단부분</span>을 확인하세요.','./img/err_type_4_5.png', 4,6,100);
+                this.insertQna('제어반 전면 I/O보드의 <span style="color:red;">왼쪽상단부분</span>을 확인하세요.','./img/err_type_4_5.png', 4,6,100);
                 this.insertQna('<span style="color:red; font-size:120%;">&#9316;</span> 유리관 휴즈가 파손되었나요? <br /> ☞ 유리관 내 선이 끊어졌는지 확인','./img/err_type_4_6.png', 5,444,7);
                 this.insertQna('<span style="color:red; font-size:120%;">&#9317;</span> 전원토글 스위치를 껐다 켜주세요. ','./img/err_type_4_7.png', 6,8,100);
                 this.insertQna('판넬 뒤쪽의 RMS의 <span style="color:red"; font-size:120%;>&#9318;</span> RUN 옆의 LED가 적색인가요?','./img/err_type_4_8.png', 7,444,555);
@@ -132,8 +139,8 @@ var test = new Vue({
                 this.insertQna('국사 출입문 옆에 비치되어있는 기기배치도를 보고 <span style="color:blue">정류기시설</span> 위치를 파악해주세요.','./img/err_type_6_1.png', 0,2,100);
                 this.insertQna('<span style="color:red; font-size:120%;">&#9312;</span> 화재감지기 위치를 파악해주세요.<br /> ☞ 정류기 상부.','./img/err_type_6_2.png', 1,3,100);
                 this.insertQna('<span style="color:red; font-size:120%;">&#9313;</span> 화재감지기 LED가 적색으로 점등되어 있나요?','./img/err_type_6_3.png', 2,4,444);
-                this.insertQna('<span style="color:red; font-size:120%;">반시계방향(왼쪽방향)</span> 으로 돌려 감지기를 탈착해주세요.','./img/err_type_6_4.png', 3,5,100);
-                this.insertQna('감지기를 흔든 후, <span style="color:red; font-size:120%;">시계방향(오른쪽방향)</span> 으로 돌려 감지기를 부착해주세요.','./img/err_type_6_5.png', 4,6,100);
+                this.insertQna('<span style="color:red;">반시계방향(왼쪽방향)</span> 으로 돌려 감지기를 탈착해주세요.','./img/err_type_6_4.png', 3,5,100);
+                this.insertQna('감지기를 흔든 후, <span style="color:red;">시계방향(오른쪽방향)</span> 으로 돌려 감지기를 부착해주세요.','./img/err_type_6_5.png', 4,6,100);
                 this.insertQna('<span style="color:red; font-size:120%;">&#9314;</span> 화재감지기 LED가 소등되어 있나요?','./img/err_type_6_6.png', 5,555,444);
                 this.nono = '아니요';
             }else if(this.errIndex==7){
@@ -144,8 +151,21 @@ var test = new Vue({
                 this.insertQna('Q2. 누수 센서 주변의 물기/이물질을 제거해주세요.<br /> ☞  청테이프와 동테이프 주변 깨끗이 청소','./img/err_type_7_4.png', 3,5,100);
                 this.insertQna('Q3. 경보가 회복되었나요?','./img/err_type_7_5.png', 4,555,444);
                 this.nono = '아니요';
+            }else if(this.errIndex==8){
+                this.insertQna('<span style="color:red; font-size:120%;">&#9312;</span> 냉방기 내부를 육각렌치로 열어 <span style="color:blue">자동복구장치</span>의 위치를 찾아주세요.','./img/err_type_8_1.png', 999,1,100);
+                this.insertQna('LED점등 상태에 따른 고장내역을 확인해주세요.<br />아래 LED 중 하나라도 점등이 되어있나요?','./img/err_type_8_2.png', 0,2,444);
+                this.insertQna('<span style="color:red; font-size:120%;">&#9315;</span>번 LED만 점등되어있나요?','./img/err_type_8_3.png', 1,3,4);
+                this.insertQna('냉매필터가 막혀있습니다.<br /> 냉매필터를 교체해야하니, 탄방전력실로 연락하세요.','./img/err_type_8_3.png', 2,444,100);//no일 때 유관부서 연락해주세요
+                this.insertQna('<span style="color:red; font-size:120%;">&#9313;&#9314;</span>번 LED가 점등되어있나요?','./img/err_type_8_4.png', 2,5,6);
+                this.insertQna('2번 압축기의 냉매가 고압입니다.<br /> 2번 압축기의 냉매를 조정해야하니, 탄방전력실로 연락하세요.','./img/err_type_8_4.png', 4,444,100);//no일 때 유관부서 연락해주세요
+                this.insertQna('<span style="color:red; font-size:120%;">&#9312;&#9314;</span>번 LED가 점등되어있나요?','./img/err_type_8_5.png', 4,7,8);
+                this.insertQna('1번 압축기의 냉매가 고압입니다.<br /> 1번 압축기의 냉매를 조정해야하니, 탄방전력실로 연락하세요.','./img/err_type_8_5.png', 6,444,100);//no일 때 유관부서 연락해주세요
+                this.insertQna('<span style="color:red; font-size:120%;">&#9312;&#9313;&#9314;</span>LED가 점등되어있나요?','./img/err_type_8_6.png', 6,9,10);
+                this.insertQna('냉각수 순환에 장애가 있습니다.<br /> 기다리면 자동회복 됩니다.<br /> 회복되었나요?','./img/err_type_8_6.png', 6,555,12);
+                this.insertQna('<span style="color:red; font-size:120%;">&#9312;&#9313;&#9314;&#9315;</span>LED가 모두 점등되어있나요?','./img/err_type_8_7.png', 8,11,100);//no일 때 유관부서 연락해주세요
+                this.insertQna('압력과 냉매필터가 모두 고장입니다.<br /> 탄방 전력실로 연락하세요.','./img/err_type_8_7.png', 6,444,444);//no일 때 유관부서 연락해주세여
+                this.insertQna('자동복구장치 자체 이상입니다.<br /> 아래 그림을 참고하여 일자드라이버로 선을 빼주세요.','./img/err_type_8_8.png', 9,555,100);//no일 때 유관부서 연락해주세여
             }
-
         },
        no: function() {
             var self = this;
@@ -277,7 +297,7 @@ var test = new Vue({
             var self = this;
             x_Index = this.question[self.qnaIndex].preIndex;
             if(this.errIndex == 1 && this.qnaIndex == 8){
-                alert(this.flag);
+//                alert(this.flag);
                 if(this.flag == true){
                     this.flag = false;
                     x_Index = 11;
@@ -316,10 +336,21 @@ var test = new Vue({
             $('#intro').hide();
             $('#err-type').hide();
             $('.top').show();
-            $('#caution').show();
             $('.back-btn').hide();
             $('#main').hide();
+            $('#caution').show();
             this.qnaIndex = 0;
+            if(this.errIndex==8){
+                $('.cautionImg').show();
+                this.cauIndex = 1;
+                this.callTo[1]='☎ 042-600-0124 (탄방전력실)';
+                this.number = '042-600-0124';
+            }else{
+                $('.cautionImg').hide();
+                this.cauIndex = 0;
+                this.callTo[1]='☎ 042-478-7550 (전원기술부)';
+                this.number = '042-478-7550';
+            }
         },
         insertQna: function(q, i, p, y, n) {
             var item = {
@@ -337,6 +368,16 @@ var test = new Vue({
                 todo: t
             };
             this.result.push(items);
+        },
+        insertCaution: function(i,c1,c2,c3,i2) {
+            var items = {
+                intro: i,
+                caution1: c1,
+                caution2: c2,
+                caution3: c3,
+                img: i2
+            };
+            this.caution_list.push(items);
         },
         showToast: function(msg) {
             var self = this;
